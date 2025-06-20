@@ -1,41 +1,34 @@
-Quick sort
 import random
 import time
 
 def quick(arr):
-if len(arr) <= 1:
-return arr
+    if len(arr)<=1:
+        return arr
+    piv=arr[len(arr)//2]
+    high=[x for x in arr if x >piv ]
+    low=[x for x in arr if x <piv]
+    mid = [x for x in arr if x ==piv]
+    return quick(low)+mid+quick(high)
 
-piv = arr[len(arr) // 2]
-left = [x for x in arr if x < piv]
-mid = [x for x in arr if x == piv]
-right = [x for x in arr if x > piv]
+def calc_time(arr):
+    start=time.time()
+    quick(arr)
+    size=len(arr)
+    avg_time=time.time()-start
+    start=time.time()
+    quick(sorted(arr))
 
-return quick(left) + mid + quick(right)
+    best_time=time.time()-start
+    quick(sorted(arr,reverse=True)) 
+    
+    worst_time=time.time()-start
 
-def calc_time(n, arr):
-#Average Case Time
-start = time.time()
-quick(arr)
-avg_time = time.time() - start
+    return len(arr),best_time,avg_time,worst_time
 
-#Best Case Time
-start = time.time()
-quick(sorted(arr))
-best_time = time.time() - start
+user_inp=[random.randint(1,1000) for _ in range(38)]
 
-#Worst Case time
-start = time.time()
-quick(sorted(arr, reverse=True))
-worst_time = time.time() - start
-
-return n, best_time, avg_time, worst_time # Ensure return values
-
-user_ip = [random.randint(1,10000) for _ in range (10)]
-print("n\tbest_time\t avg_time\t worst_time")
-for n in user_ip:
-arr = [random.randint(1,10000) for _ in range (n)]
-n, best_time, avg_time, worst_time = calc_time(n, arr)
-print(f"{n}\t{best_time:.8f}\t{avg_time:.8f}\t{worst_time:.8f}")
-
-
+print(f"38\t\tBest_Case\t\tAvg_Case\tWorst_Case")
+for n in user_inp:
+    arr=[random.randint(1,1000) for _ in range(n)]
+    n,best_time,avg_time,worst_time=calc_time(arr)
+    print(f"\n{n}\t\t{best_time:6f}\t\t{avg_time:6f}\t{worst_time:6f}")
