@@ -3,27 +3,30 @@ def prims(graph, start):
     mst = []
     edges = []
 
+    # Start from the given node
     visited.add(start)
 
-    # Push all edges from the starting node
+    # Add all edges from the start node to the list
     for neighbour, weight in graph[start]:
         edges.append((weight, start, neighbour))
 
     while edges:
-        edges.sort()  # Always pick the edge with the smallest weight
+        # Sort edges by weight
+        edges.sort()
         weight, u, v = edges.pop(0)
 
         if v not in visited:
             visited.add(v)
             mst.append((u, v, weight))
 
+            # Add all edges from the newly visited node
             for neighbour, w in graph[v]:
                 if neighbour not in visited:
                     edges.append((w, v, neighbour))
 
     return mst
 
-# Sample graph
+# Define the graph
 graph = {
     'A': [('B', 1), ('C', 4)],
     'B': [('A', 1), ('C', 2), ('D', 5)],
@@ -31,5 +34,17 @@ graph = {
     'D': [('B', 5), ('C', 1)]
 }
 
+# Starting node
 start = 'A'
-print("MST:", prims(graph, start))
+
+# Find the MST
+total_cost = 0
+span_tree = prims(graph, start)
+
+# Calculate total cost
+for source, target, cost in span_tree:
+    total_cost += cost
+
+# Display the results
+print("MST :", span_tree)
+print("The Cost Of MST is :", total_cost)
